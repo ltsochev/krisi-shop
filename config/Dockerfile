@@ -2,16 +2,16 @@ FROM wordpress:php8.2-fpm-alpine
 
 RUN apk add --no-cache mysql-client bash
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-COPY ./config/entrypoint.sh /usr/bin/entrypoint.sh
+COPY ./config/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN chmod +x /usr/local/bin/wp
-RUN chmod +x /usr/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN chown -R www-data:www-data /var/www/html
 
