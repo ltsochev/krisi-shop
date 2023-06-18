@@ -1,0 +1,81 @@
+version: '3.1'
+
+services:
+   db:
+     image: mariadb:10.6.14
+     volumes:
+       - db:/var/lib/mysql
+     ports:
+       - 3306:3306
+     networks:
+      - krisinet
+     environment:
+       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+       MYSQL_DATABASE: ${MYSQL_DATABASE}
+       MYSQL_USER: ${MYSQL_USER}
+       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+   wordpress:
+    build:
+      context: .
+      dockerfile: ./config/Dockerfile
+    networks:
+      - krisinet
+    volumes:
+      - wordpress:/var/www/html
+      - ./plugins/wp-graphql-woocommerce:/var/www/html/wp-content/plugins/wp-graphql-woocommerce
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    depends_on:
+      - db
+   
+   nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - wordpress:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - krisinet
+
+   wordpress-cli:
+    image: wordpress:cli
+    user: ${WP_CLI_USER}
+    networks:
+      - krisinet
+    volumes:
+      - wordpress:/var/www/html
+      - ./plugins/wp-graphql-woocommerce:/var/www/html/wp-content/plugins/wp-graphql-woocommerce
+    environment:
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+    depends_on:
+      - db
+      - wordpress
+    command: sh -c "sleep 20 &&
+                    wp core install --path=/var/www/html --url=localhost --title=${WORDPRESS_TITLE} --admin_user=${WORDPRESS_USER} --admin_password=${WORDPRESS_PASSWORD} --admin_email=${WORDPRESS_EMAIL} && 
+                    wp core version && 
+                    wp plugin install woocommerce --activate --allow-root --version=${WOOCOMMERCE_VERSION} && 
+                    wp plugin install wp-graphql --activate --allow-root --version=1.14.4 &&
+                    wp plugin activate wp-graphql-woocommerce &&
+                    wp plugin install wordpress-seo --activate --allow-root --version=20.9 &&
+                    wp plugin install instantio --activate --allow-root --version=2.5.25 &&
+                    wp plugin install printful-shipping-for-woocommerce --activate --allow-root --version=2.2.2 &&
+                    wp plugin install woocommerce-gateway-stripe --activate --allow-root --version=${STRIPE_GATEWAY_VERSION}"
+
+networks:
+  krisinet:
+    driver: bridge
+
+volumes:
+  wordpress:
+  db:
