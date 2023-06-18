@@ -1,22 +1,24 @@
-FROM --platform=linux/amd64 wordpress:php8.2-fpm-alpine
+FROM wordpress:php8.2-fpm-alpine
 
-RUN apk --update add zip unzip gcc make g++ zlib-dev autoconf yarn automake libpng-dev alpine-sdk nasm net-tools linux-headers
-RUN set -xe; \
-  apk --no-cache update && apk --no-cache upgrade \
-  && apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
-  && apk add --no-cache php82-pdo_mysql \
-  && docker-php-ext-install pdo_mysql \
-  && pecl install redis \
-  && docker-php-ext-enable redis  \
-  && apk add --no-cache libc6-compat openssl1.1-compat \
-  # Cleanup build deps
-  && apk del .build-deps \
-  && rm -rf /tmp/* /var/cache/apk/*
+RUN apk add --no-cache mysql-client bash
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
 
 COPY ./config/entrypoint.sh /usr/bin/entrypoint.sh
 
-WORKDIR /var/www/html
+RUN chmod +x /usr/local/bin/wp
+RUN chmod +x /usr/bin/entrypoint.sh
 
-COPY plugins ./wp-content/plugins
+RUN chown -R www-data:www-data /var/www/html
 
-RUN chmod 777 /usr/bin/entrypoint.sh
+USER www-data
+
+COPY --chown=www-data:www-data . /var/www/html
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+
+CMD [ "php-fpm" ]
