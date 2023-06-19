@@ -17,4 +17,5 @@ RUN chown -R www-data:www-data /var/www/html
 
 USER www-data
 
-COPY --chown=www-data:www-data . /var/www/html
+# Copy the Woocommerce GraphQL plugin 
+COPY --chown=www-data:www-data plugins/wp-graphql-woocommerce /var/www/html/wp-content/plugins/wp-graphql-woocommerce

@@ -23,7 +23,6 @@ services:
       - krisinet
     volumes:
       - wordpress:/var/www/html
-      - ./plugins/wp-graphql-woocommerce:/var/www/html/wp-content/plugins/wp-graphql-woocommerce
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${MYSQL_USER}
