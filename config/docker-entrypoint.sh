@@ -106,7 +106,7 @@ done
 >&2 echo "Database is up - continuing with execution"
 # Run WordPress CLI commands
 wp core version
-wp core install --path=/var/www/html --url=localhost --title="$WORDPRESS_TITLE" --admin_user="$WORDPRESS_USER" --admin_password="$WORDPRESS_PASSWORD" --admin_email="$WORDPRESS_EMAIL"
+wp core install --path=/var/www/html --url="$SITE_URL" --title="$WORDPRESS_TITLE" --admin_user="$WORDPRESS_USER" --admin_password="$WORDPRESS_PASSWORD" --admin_email="$WORDPRESS_EMAIL"
 wp plugin install woocommerce --activate --allow-root --version="$WOOCOMMERCE_VERSION"
 wp plugin install wp-graphql --activate --allow-root --version=1.14.4
 wp plugin install wordpress-seo --activate --allow-root --version=20.9

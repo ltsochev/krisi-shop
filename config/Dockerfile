@@ -1,5 +1,8 @@
 FROM wordpress:php8.2-fpm-alpine
 
+ARG SITE_URL
+ENV SITE_URL=${SITE_URL:-'http://localhost'}
+
 RUN apk add --no-cache mysql-client bash
 
 RUN docker-php-ext-install pdo pdo_mysql
