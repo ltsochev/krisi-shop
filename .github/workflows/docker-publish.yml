@@ -91,13 +91,3 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-      
-      - name: Deploy to Hetzner VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ vars.HETZNER_SSH_HOST }}
-          username: root
-          key: ${{ secrets.HETZNER_SSH_PRIVATE_KEY }}
-          script: |
-            chmod +x ${{ vars.HETZNER_DEPLOY_SCRIPT }}
-            sh ${{ vars.HETZNER_DEPLOY_SCRIPT }}

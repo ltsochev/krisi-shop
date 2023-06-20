@@ -1,0 +1,24 @@
+name: Deploy to Hetzner VPS
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: SSH into Hetzner VPS and run deploy.sh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.HETZNER_SSH_HOST }}
+          username: root
+          key: ${{ secrets.HETZNER_SSH_PRIVATE_KEY }}
+          script: |
+            chmod +x ${{ vars.HETZNER_DEPLOY_SCRIPT }}
+            sh ${{ vars.HETZNER_DEPLOY_SCRIPT }}
