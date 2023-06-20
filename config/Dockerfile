@@ -12,6 +12,8 @@ RUN curl -o wp-graphql-woocommerce.zip -fL https://github.com/wp-graphql/wp-grap
     && unzip wp-graphql-woocommerce.zip -d /usr/src/wp-graphql-woocommerce \
     && rm -f wp-graphql-woocommerce.zip
 
+RUN ls -l /usr/src
+
 COPY ./config/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 COPY --chown=www-data:www-data /usr/src/wp-graphql-woocommerce /var/www/html/wp-content/plugins/wp-graphql-woocommerce
