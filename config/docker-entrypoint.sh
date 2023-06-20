@@ -103,8 +103,10 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 		echo >&2 "The plugins are not moved to $PWD - copying now..."
 
 		cp -r /usr/src/wp-graphql-woocommerce /var/www/html/wp-content/plugins/
-		
+
 		echo >&2 "Complete! WordPress has been successfully copied to $PWD"
+	else
+		echo >&2 "Can't find wp-graphql-woocommerce in /usr/src"
 	fi
 fi
 
