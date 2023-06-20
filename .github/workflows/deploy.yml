@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: SSH into Hetzner VPS and run deploy.sh
         uses: appleboy/ssh-action@master
