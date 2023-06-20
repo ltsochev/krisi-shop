@@ -94,6 +94,18 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 			fi
 		done
 	fi
+
+	if [ ! -d "wp-content/plugins/wp-graphql-woocommerce" ] && [ -d "/usr/src/wp-graphql-woocommerce" ]; then
+		if [ "$uid" = '0' ] && [ "$(stat -c '%u:%g' .)" = '0:0' ]; then
+			chown "$user:$group" .
+		fi
+
+		echo >&2 "The plugins are not moved to $PWD - copying now..."
+
+		cp -r /usr/src/wp-graphql-woocommerce /var/www/html/wp-content/plugins/
+		
+		echo >&2 "Complete! WordPress has been successfully copied to $PWD"
+	fi
 fi
 
 
