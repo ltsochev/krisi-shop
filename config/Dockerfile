@@ -1,4 +1,4 @@
-FROM wordpress:php8.2-fpm-alpine
+FROM wordpress:php8.2-fpm-alpine as builder
 
 RUN apk add --no-cache mysql-client bash unzip
 
@@ -12,11 +12,11 @@ RUN curl -o wp-graphql-woocommerce.zip -fL https://github.com/wp-graphql/wp-grap
     && unzip wp-graphql-woocommerce.zip -d /usr/src/wp-graphql-woocommerce \
     && rm -f wp-graphql-woocommerce.zip
 
-RUN ls -l /usr/src
+FROM builder as runner
+
+COPY --from=builder --chown=www-data:www-data /usr/src/wp-graphql-woocommerce /var/www/html/wp-content/plugins/wp-graphql-woocommerce
 
 COPY ./config/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
-COPY --chown=www-data:www-data /usr/src/wp-graphql-woocommerce /var/www/html/wp-content/plugins/wp-graphql-woocommerce
 
 RUN chmod +x /usr/local/bin/wp
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
