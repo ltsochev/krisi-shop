@@ -1,18 +1,14 @@
 name: Deploy to Hetzner VPS
 
 on:
-  release:
-    types:
-      - published
+  workflow_run:
+    workflows: [docker-publish]
+    types: [completed]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
       - name: SSH into Hetzner VPS and run deploy.sh
         uses: appleboy/ssh-action@master
         with:
