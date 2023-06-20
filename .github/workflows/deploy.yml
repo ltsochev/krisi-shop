@@ -18,4 +18,5 @@ jobs:
           key: ${{ secrets.HETZNER_SSH_PRIVATE_KEY }}
           script: |
             chmod +x ${{ vars.HETZNER_DEPLOY_SCRIPT }}
+            cd /root/krisi-shop
             sh ${{ vars.HETZNER_DEPLOY_SCRIPT }}
