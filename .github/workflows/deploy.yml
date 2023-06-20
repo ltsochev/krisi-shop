@@ -12,9 +12,9 @@ jobs:
       - name: SSH into Hetzner VPS and run deploy.sh
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ vars.HETZNER_SSH_HOST }}
+          host: ${{ env.HETZNER_SSH_HOST }}
           username: root
           key: ${{ secrets.HETZNER_SSH_PRIVATE_KEY }}
           script: |
-            chmod +x ${{ vars.HETZNER_DEPLOY_SCRIPT }}
-            sh ${{ vars.HETZNER_DEPLOY_SCRIPT }}
+            chmod +x ${{ env.HETZNER_DEPLOY_SCRIPT }}
+            sh ${{ env.HETZNER_DEPLOY_SCRIPT }}
