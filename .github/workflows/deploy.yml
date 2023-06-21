@@ -1,9 +1,8 @@
 name: Deploy to Hetzner VPS
 
 on:
-  workflow_run:
-    workflows: [docker-publish]
-    types: [completed]
+  push:
+    tags: ['*']
 
 jobs:
   deploy:

@@ -108,6 +108,18 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	else
 		echo >&2 "Can't find wp-graphql-woocommerce in /usr/src"
 	fi
+
+	if [ -d "/usr/src/themes" ]; then
+		if [ -n "$(find -mindepth 1 -maxdepth 1 -not -name wp-content)" ]; then
+			echo >&2 "Custom themes found copying now..."
+
+			cp -Rn /usr/src/themes/* "$PWD/wp-content/themes"
+
+			echo >&2 "Complete! Themes successfully carried over to $PWD"
+		fi
+	else
+		echo >&2 "Can't find any themes in /usr/src directory"
+	fi
 fi
 
 
