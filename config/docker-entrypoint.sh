@@ -110,7 +110,7 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 	fi
 
 	if [ -d "/usr/src/themes" ]; then
-		if [ -n "$(find -mindepth 1 -maxdepth 1 -not -name wp-content)" ]; then
+		if [ -n "$(find /usr/src/themes -mindepth 1 -maxdepth 1 -not \( -name wp-content -o -name .gitkeep \))" ]; then
 			echo >&2 "Custom themes found copying now..."
 
 			cp -Rn /usr/src/themes/* "$PWD/wp-content/themes"
