@@ -24,6 +24,8 @@ RUN curl -o wp-graphql-woocommerce.zip -fL https://github.com/wp-graphql/wp-grap
 
 COPY ./config/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
+COPY ./config/php.ini /usr/local/etc/php/conf.d/kstore-php.ini
+
 COPY --chown=www-data:www-data ./themes /usr/src/themes
 
 RUN chmod +x /usr/local/bin/wp
