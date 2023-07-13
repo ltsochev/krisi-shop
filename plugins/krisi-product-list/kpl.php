@@ -14,6 +14,8 @@ function kpl_load_categories_with_products() {
         'hide_empty' => true,
         'number' => 4, // Adjust the number of categories to retrieve
         'pad_counts' => true,
+        'orderby' => 'count', // Sort by product count
+        'order' => 'DESC', // Sort in descending order
     );
 
     $categories = get_terms($args);
