@@ -1,0 +1,64 @@
+.kstore-heading {
+    margin: 0;
+}
+
+.category-product-list {
+    margin-bottom: 32px;
+}
+
+.product-card-list {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+    display: flex;
+    width: 100%;
+}
+
+.product-card-list-item {
+    position: relative;
+	margin: 16px 0 0 16px;
+    width: 33.3333%;
+}
+
+.product-card-list-item-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.visibility-hidden {
+    visibility: hidden;
+}
+
+.product-card__image-with-placeholder-wrapper {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.product-card__image-with-placeholder-wrapper > img {
+    max-width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.product-card__title {
+    display: inline;
+    font-family: Helvetica, "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    border-bottom: 1px solid transparent;
+    color: #3a3a3a;
+}
+
+.product-card-list-item:focus-within .product-card__title,
+.product-card-list-item:hover .product-card__title {
+    border-bottom-color: #3a3a3a;
+}
+
+.product-car-price {
+    color: #333232;
+    font-weight: 700;
+}
