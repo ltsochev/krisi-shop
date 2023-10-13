@@ -123,8 +123,10 @@ if [[ "$1" == apache2* ]] || [ "$1" = 'php-fpm' ]; then
 fi
 
 
-host="$WORDPRESS_DB_HOST"
-until mysqladmin ping -h "$host" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" > /dev/null 2>&1; do
+IFS=':' read -ra HOST_PORT <<< "$WORDPRESS_DB_HOST"
+HOST="${HOST_PORT[0]}"
+PORT="${HOST_PORT[1]:-3306}"
+until mysqladmin ping -h "$HOST" -P"$PORT" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" > /dev/null 2>&1; do
     >&2 echo "Database is unavailable - sleeping"
     sleep 1
 done
